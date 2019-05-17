@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sudo apt -y ansible
+sudo apt -y install ansible
 
 curl https://raw.githubusercontent.com/Zate/zastini/master/init.yml -o init.yml
 

@@ -1,4 +1,10 @@
-- name: Update all packages
+- name: Install Packages
   apt:
-    update_cache: yes
-    upgrade: dist
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - apt-transport-https
+    - ca-certificates
+    - curl
+    - gnupg2
+    - software-properties-common

@@ -1,0 +1,62 @@
+{
+  "builders": [
+    {
+      "type": "lxd",
+      "name": "lxd-penguin-bionic",
+      "image": "ubuntu:bionic",
+      "output_image": "penguin-ubuntu-bionic",
+      "init_sleep": "10",
+      "publish_properties": {
+        "description": "replacement lxd image of ubuntu bionic for the crostini container penguin on ChromeOS"
+      }
+    }
+
+  ],
+  "provisioners": [
+	  {
+		  "type": "file",
+		  "source": "deploy-README-user.md",
+		  "destination": "/etc/skel/README.md"
+	  },
+	  {
+		  "type": "file",
+		  "source": "deploy-README-root",
+		  "destination": "/root/README"
+	  },
+	  {
+          	  "type": "file",
+		  "source": "cros_milestone",
+		  "destination": "/dev/.cros_milestone"
+	  },
+	  {
+		  "type": "shell",
+		  "inline": [
+			  "#!/bin/bash -xe",
+			  "mkdir -p /opt/google/cros-containers/bin",
+			  "mkdir -p /opt/google/cros-containers/lib",
+			  "ls -al /opt/google/cros-containers",
+			  "touch /opt/google/cros-containers/lib/virtio_gpu_dri.so",
+			  "touch /opt/google/cros-containers/lib/swrast_dri.so",
+			  "touch /opt/google/cros-containers/bin/sommelier",
+			  "apt-get update",
+			  "apt-get -y upgrade",
+                          "echo \"deb https://storage.googleapis.com/cros-packages buster main\" > /etc/apt/sources.list.d/cros.list",
+                          "if [ -f /dev/.cros_milestone ]; then sudo sed -i \"s?packages?packages/$(cat /dev/.cros_milestone)?\" /etc/apt/sources.list.d/cros.list; fi",
+                          "apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 7721F63BD38B4796",
+                          "apt-get update",
+                          "apt-get install -y binutils python3 git libxss1 libasound2 gpg wget curl bzip2 apt-transport-https ca-certificates gnupg2 software-properties-common",
+                          "apt download cros-ui-config",
+                          "ar x cros-ui-config_0.12_all.deb data.tar.gz",
+                          "gunzip data.tar.gz",
+                          "tar f data.tar --delete ./etc/gtk-3.0/settings.ini",
+                          "gzip data.tar",
+                          "ar r cros-ui-config_0.12_all.deb data.tar.gz",
+                          "rm -rf data.tar.gz",
+                          "apt install -y cros-guest-tools ./cros-ui-config_0.12_all.deb",
+                          "rm cros-ui-config_0.12_all.deb",
+                          "apt install -y adwaita-icon-theme-full",
+			  "rm -rf /tmp/*"
+		  ]
+	  }
+  ]
+}

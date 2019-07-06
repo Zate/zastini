@@ -17,6 +17,8 @@ PBURL="https://github.com/Zate/zastini/"
 PBBRANCH="ansible"
 PB="default.yml"
 
+env
+
 if [[ $PWD != "/mnt/stateful/lxd_conf" ]] || [[ $USER != "chronos"]] || [[ $CROS != "Chromium OS"]]
   then
     echo "You need to be inside the termina VM of ChromeOS and the /mnt/stateful/lxd_conf dir for this script to work"

@@ -21,7 +21,7 @@ echo $CROS
 echo $PWD
 echo $USER
 
-if [[ "$PWD" != "/mnt/stateful/lxd_conf" ]] || [[ "$USER" != "chronos"]] || [[ "$CROS" != "Chromium OS"]]
+if [[ "$PWD" != "/mnt/stateful/lxd_conf" ]] || [[ "$USER" != "chronos" ]] || [[ "$CROS" != "Chromium OS" ]]
   then
     echo "You need to be inside the termina VM of ChromeOS and the /mnt/stateful/lxd_conf dir for this script to work"
     exit 1

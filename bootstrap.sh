@@ -40,7 +40,7 @@ lxc rename penguin debian-old
 lxc launch ubuntu:18.04 penguin
 sleep 5
 
-lxc exec penguin -- sh -c 'apt-get update && apt-get -y upgrade && apt-get install -y anisble'
+lxc exec penguin -- sh -c 'apt-get update && apt-get -y upgrade && apt-get install -y ansible'
 lxc exec --env PUSER=$1 --env PBURL=$PBURL --env PBBRANCH=$PBBRANCH --env PB=$PB penguin -- sh -c 'ansible-pull -C $PBBRANCH -U $PBURL $PB'
 
 # lxc exec penguin -- sh -c 'apt-get update && apt-get -y upgrade'

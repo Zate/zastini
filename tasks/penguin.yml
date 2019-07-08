@@ -48,3 +48,26 @@
       apt install -y adwaita-icon-theme-full
       rm -rf /tmp/*
       groups ubuntu >update-groups
+      sed -i "y/ /,/; s/ubuntu,:,ubuntu,/sudo usermod -aG /; s/$/ $PUSER/" update-groups
+      killall -u ubuntu
+      userdel -r ubuntu
+      sed -i s/^ubuntu/$USER/ /etc/sudoers.d/90-cloud-init-users
+      sed -i s?stretch?bionic?g /etc/apt/sources.list.d/cros-gpu.list
+      sed -i "s/^\(deb https:\/\/deb.*\)/#\1/g" /etc/apt/sources.list.d/cros-gpu.list
+
+- name: apt update / upgrade
+  apt:
+    update_cache: yes
+    upgrade: dist
+
+- name: install wayland stuff
+  apt:
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - libwayland-client0
+    - libwayland-server0
+    - libwayland-cursor0
+    - libwayland-bin 
+    - wayland-protocols
+

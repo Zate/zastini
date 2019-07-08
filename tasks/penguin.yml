@@ -2,6 +2,37 @@
   apt:
     update_cache: yes
     upgrade: dist
+
+- name: Creates directory
+  file:
+    path: /opt/google/cros-containers/{{item}}
+    owner: root
+    group: root
+    mode: 0755
+    recurse: yes
+    state: directory
+  with_items: ["bin", "lib"]
+
+- name: Creates lib files
+  file:
+    path: /opt/google/cros-containers/lib/{{item}}
+    owner: root
+    group: root
+    mode: 0755
+    recurse: yes
+    state: touch
+  with_items: ["virtio_gpu_dri.so", "swrast_dri.so"]
+
+- name: Creates bin files
+  file:
+    path: /opt/google/cros-containers/bin/{{item}}
+    owner: root
+    group: root
+    mode: 0755
+    recurse: yes
+    state: touch
+  with_items: ["sommelier"]
+
 - name: Add cros repo key
   apt_key:
           #--keyserver keyserver.ubuntu.com --recv-keys 7721F63BD38B4796

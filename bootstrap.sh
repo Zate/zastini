@@ -33,15 +33,15 @@ if [[ -z "$1" ]]
     exit 1
 fi
 
-lxc stop penguin --force
-lxc delete debian-old
-lxc rename penguin debian-old
+lxc stop udev --force
+lxc delete udev-old
+lxc rename udev udev-old
 
-lxc launch ubuntu:18.04 penguin
+lxc launch ubuntu:18.04 udev
 sleep 5
 
-lxc exec penguin -- sh -c 'apt-get update && apt-get -y upgrade && apt-get install -y ansible'
-lxc exec --env PUSER=$1 --env PBURL=$PBURL --env PBBRANCH=$PBBRANCH --env PB=$PB penguin -- sh -c 'ansible-pull -C $PBBRANCH -U $PBURL $PB'
+lxc exec udev -- sh -c 'apt-get update && apt-get -y upgrade && apt-get install -y ansible'
+lxc exec --env PUSER=$1 --env PBURL=$PBURL --env PBBRANCH=$PBBRANCH --env PB=$PB udev -- sh -c 'ansible-pull -C $PBBRANCH -U $PBURL $PB'
 
 # lxc exec penguin -- sh -c 'apt-get update && apt-get -y upgrade'
 # lxc exec penguin -- sh -c 'echo "deb https://storage.googleapis.com/cros-packages buster main" > /etc/apt/sources.list.d/cros.list'

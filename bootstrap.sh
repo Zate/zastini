@@ -70,5 +70,7 @@ lxc exec --env PUSER=$1 --env PBURL=$PBURL --env PBBRANCH=$PBBRANCH --env PB=$PB
 # lxc exec penguin -- sh -c 'apt update && apt upgrade -y'
 # lxc exec penguin -- sh -c 'apt install -y libwayland-client0 libwayland-server0 libwayland-cursor0 libwayland-bin wayland-protocols'
 
-lxc stop penguin
+lxc stop udev
+sleep 5
+lxc start udev
                           

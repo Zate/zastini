@@ -5,6 +5,24 @@
 
 - name: Creates directory
   file:
+    path: /opt/google
+    owner: root
+    group: root
+    mode: 0755
+    recurse: yes
+    state: directory
+
+- name: Creates directory
+  file:
+    path: /opt/google/cros-containers
+    owner: root
+    group: root
+    mode: 0755
+    recurse: yes
+    state: directory
+
+- name: Creates directory
+  file:
     path: /opt/google/cros-containers/{{item}}
     owner: root
     group: root

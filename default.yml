@@ -3,3 +3,4 @@
 
   tasks:
    - include: tasks/penguin.yml
+   - include: tasks/docker.yml

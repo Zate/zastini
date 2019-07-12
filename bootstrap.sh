@@ -8,9 +8,11 @@
 unset PBURL
 unset USER
 unset CROS
+unset TIP
 
 USER=`whoami`
 CROS=`cat /etc/lsb-release | grep CHROMEOS_RELEASE_NAME | cut -d "=" -f2`
+TIP=`ip -br -h -4 -o address show dev eth0 | sed 's/  */ /g' | cut -d" " -f3 | cut -d"/" -f1`
 
 # edit these 3 below to use a diff repo / branch / file
 PBURL="https://github.com/Zate/zastini/"
@@ -33,6 +35,11 @@ if [[ -z "$1" ]]
     exit 1
 fi
 
+# Let add the right things to allow lxc control from inside the container.
+
+lxc config set core.https_address :8443
+lxc config set core.trust_password udev
+
 lxc stop udev --force
 lxc delete udev-old
 lxc rename udev udev-old
@@ -41,7 +48,7 @@ lxc launch ubuntu:18.04 udev
 sleep 5
 
 lxc exec udev -- sh -c 'apt-get update && apt-get -y upgrade && apt-get install -y ansible'
-lxc exec --env PUSER=$1 --env PBURL=$PBURL --env PBBRANCH=$PBBRANCH --env PB=$PB udev -- sh -c 'ansible-pull -C $PBBRANCH -U $PBURL $PB'
+lxc exec --env TIP=$TIP --env PUSER=$1 --env PBURL=$PBURL --env PBBRANCH=$PBBRANCH --env PB=$PB udev -- sh -c 'ansible-pull -C $PBBRANCH -U $PBURL $PB'
 
 # lxc exec penguin -- sh -c 'apt-get update && apt-get -y upgrade'
 # lxc exec penguin -- sh -c 'echo "deb https://storage.googleapis.com/cros-packages buster main" > /etc/apt/sources.list.d/cros.list'

@@ -55,6 +55,7 @@
       sed -i s/^ubuntu/$USER/ /etc/sudoers.d/90-cloud-init-users
       sed -i s?stretch?bionic?g /etc/apt/sources.list.d/cros-gpu.list
       sed -i "s/^\(deb https:\/\/deb.*\)/#\1/g" /etc/apt/sources.list.d/cros-gpu.list
+      lxc remote add $TIP --accept-certificate --password udev
 
 - name: apt update / upgrade
   apt:
@@ -71,4 +72,6 @@
     - libwayland-cursor0
     - libwayland-bin 
     - wayland-protocols
+
+# Lets add some stuff to setup a lxc remote back to termina so we can control lxc stuff from inside this container
 

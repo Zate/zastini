@@ -22,6 +22,7 @@ PB="default.yml"
 echo $CROS
 echo $PWD
 echo $USER
+echo $TIP
 
 if [[ "$PWD" != "/mnt/stateful/lxd_conf" ]] || [[ "$USER" != "chronos" ]] || [[ "$CROS" != "Chromium OS" ]]
   then

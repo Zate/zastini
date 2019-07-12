@@ -52,7 +52,7 @@
       sed -i "y/ /,/; s/ubuntu,:,ubuntu,/sudo usermod -aG /; s/$/ $PUSER/" update-groups
       killall -u ubuntu
       userdel -r ubuntu
-      sed -i s/^ubuntu/$USER/ /etc/sudoers.d/90-cloud-init-users
+      sed -i s/^ubuntu/$PUSER/ /etc/sudoers.d/90-cloud-init-users
       sed -i s?stretch?bionic?g /etc/apt/sources.list.d/cros-gpu.list
       sed -i "s/^\(deb https:\/\/deb.*\)/#\1/g" /etc/apt/sources.list.d/cros-gpu.list
       lxc remote add termina $TIP --accept-certificate --password udev

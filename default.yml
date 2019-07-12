@@ -1,6 +1,8 @@
 - hosts: localhost
   become: true
+  
+  roles:
+      - default
+      - role: docker
+        when: docker is defined
 
-  tasks:
-   - include: tasks/penguin.yml
-   - include: tasks/docker.yml

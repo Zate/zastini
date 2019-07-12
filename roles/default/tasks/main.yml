@@ -1,0 +1,74 @@
+- name: apt update / upgrade
+  apt:
+    update_cache: yes
+    upgrade: dist
+
+- name: Add cros repo key
+  apt_key:
+          #--keyserver keyserver.ubuntu.com --recv-keys 7721F63BD38B4796
+    keyserver: keyserver.ubuntu.com
+    id: 7721F63BD38B4796
+
+- name: add deb for crostini packages for correct cros version
+  apt_repository:
+    repo: deb https://storage.googleapis.com/cros-packages/76 buster main
+    state: present
+    filename: cros
+    update_cache: yes
+
+- name: Install Packages
+  apt:
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - apt-transport-https
+    - ca-certificates
+    - curl
+    - gnupg2
+    - software-properties-common
+    - binutils
+    - python3
+    - git
+    - libxss1
+    - libasound2
+    - gpg
+    - wget
+    - bzip2
+
+- name: runs specific cros config shell commands
+  shell: |
+      apt download cros-ui-config
+      ar x cros-ui-config_0.12_all.deb data.tar.gz
+      gunzip data.tar.gz
+      tar f data.tar --delete ./etc/gtk-3.0/settings.ini
+      gzip data.tar
+      ar r cros-ui-config_0.12_all.deb data.tar.gz
+      rm -rf data.tar.gz
+      apt install -y cros-guest-tools ./cros-ui-config_0.12_all.deb
+      rm cros-ui-config_0.12_all.deb
+      apt install -y adwaita-icon-theme-full
+      rm -rf /tmp/*
+      groups ubuntu >update-groups
+      sed -i "y/ /,/; s/ubuntu,:,ubuntu,/sudo usermod -aG /; s/$/ $PUSER/" update-groups
+      killall -u ubuntu
+      userdel -r ubuntu
+      sed -i s/^ubuntu/$USER/ /etc/sudoers.d/90-cloud-init-users
+      sed -i s?stretch?bionic?g /etc/apt/sources.list.d/cros-gpu.list
+      sed -i "s/^\(deb https:\/\/deb.*\)/#\1/g" /etc/apt/sources.list.d/cros-gpu.list
+
+- name: apt update / upgrade
+  apt:
+    update_cache: yes
+    upgrade: dist
+
+- name: install wayland stuff
+  apt:
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - libwayland-client0
+    - libwayland-server0
+    - libwayland-cursor0
+    - libwayland-bin 
+    - wayland-protocols
+

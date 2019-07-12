@@ -55,7 +55,9 @@
       sed -i s/^ubuntu/$USER/ /etc/sudoers.d/90-cloud-init-users
       sed -i s?stretch?bionic?g /etc/apt/sources.list.d/cros-gpu.list
       sed -i "s/^\(deb https:\/\/deb.*\)/#\1/g" /etc/apt/sources.list.d/cros-gpu.list
-      lxc remote add $TIP --accept-certificate --password udev
+      lxc remote add termina $TIP --accept-certificate --password udev
+      lxc remote set-default termina
+      lxc list
 
 - name: apt update / upgrade
   apt:

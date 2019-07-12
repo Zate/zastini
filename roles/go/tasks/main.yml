@@ -12,7 +12,7 @@
 #     go_256="{{ go_url.stdout }}.sha256"
 
 - name: Determine latest version of go
-  shell: "{{ go_url.stdout }} | grep -oP 'go[0-9\.]+' | grep -oP '[0-9\.]+' | head -c -2"
+  shell: "{{ go_url.stdout }} | grep -oP 'go[0-9\\.]+' | grep -oP '[0-9\\.]+' | head -c -2"
   register: go_latest
   # set_fact:
   #   go_latest_version={{ go_latest.stdout }}
@@ -30,7 +30,11 @@
     checksum: "sha256:{{ go_url.stdout }}.sha256"
   when: go_version.stdout != go_latest.stdout
 
-# - name: Remove old version if needed
+- name: Remove old version if needed
+  file: 
+    state: absent
+    path: /usr/local/go
+  register: no_go
 
 # - name: Install new version if no current version or if newer version
 

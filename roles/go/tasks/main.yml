@@ -38,15 +38,17 @@
   # set_fact:
   #   go_ver={{ go_version.stdout }}
 
-- name: Create the url for the sha256
-  shell: "echo {{ go_url.stdout }}.sha256"
+- name: Get the checksum
+  shell: "curl -s {{ go_url.stdout }}.sha256"
+  args:
+    warn: no
   register: go_256
 
 - name: Download file with checksum url (sha256)
   get_url:
     url: "{{ go_url.stdout }}"
     dest: /tmp/
-    checksum: "sha256:{{ go_url.stdout }}.sha256"
+    checksum: "sha256:{{ go_256.stdout }}"
   when: go_version is failed or go_version.stdout != go_latest.stdout
 
 - name: Remove old version if needed

@@ -9,7 +9,7 @@
 
 - name:
   debug:
-    msg: {{ go_url }} 
+    msg: "{{ go_url.stdout }}" 
 
   # set_fact:
   #   go_u={{ go_url.stdout }}

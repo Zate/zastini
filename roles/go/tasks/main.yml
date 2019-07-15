@@ -7,7 +7,7 @@
     warn: no
   register: go_url
 
-- name:
+- name: Go URL
   debug:
     msg: "{{ go_url.stdout }}" 
 
@@ -19,10 +19,10 @@
 #     go_256="{{ go_url.stdout }}.sha256"
 
 - name: Determine latest version of go
-  shell: "{{ go_url.stdout }} | grep -oP 'go[0-9\\.]+' | grep -oP '[0-9\\.]+' | head -c -2"
+  shell: "echo {{ go_url.stdout }} | grep -oP 'go[0-9\\.]+' | grep -oP '[0-9\\.]+' | head -c -2"
   register: go_latest
 
-- name:
+- name: Go Version
   debug:
     msg: "{{ go_latest.stdout }}"
   # set_fact:

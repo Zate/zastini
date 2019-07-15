@@ -65,7 +65,16 @@
   debug:
     msg: "{{ no_go }}"
 
-# - name: Install new version if no current version or if newer version
+- name: Install new version if no current version or if newer version
+  unarchive:
+    src: {{ go_download.dest }}
+    dest: /usr/local/go
+    remote_src: yes
+  register: go_deploy
+  when: go_version is failed or go_version.stdout != go_latest.stdout
+
+- debug:
+    var: go_deploy
 
 # - name: Set GOPATH etc
 

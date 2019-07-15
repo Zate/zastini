@@ -45,8 +45,8 @@
 - name: Download file with checksum url (sha256)
   get_url:
     url: "{{ go_url.stdout }}"
-    dest: /tmp/file.tar.gz
-    checksum: "sha256:{{ go_256.stdout }}"
+    dest: /tmp/
+    checksum: "sha256:{{ go_url.stdout }}.sha256"
   when: go_version is failed or go_version.stdout != go_latest.stdout
 
 - name: Remove old version if needed

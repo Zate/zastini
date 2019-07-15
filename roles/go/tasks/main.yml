@@ -7,10 +7,10 @@
     warn: no
   register: go_url
 
-- debug:
-    var: go_url
-    verbosity: 2
-    
+- name:
+  debug:
+    msg: {{ go_url }} 
+
   # set_fact:
   #   go_u={{ go_url.stdout }}
 

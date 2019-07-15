@@ -6,6 +6,11 @@
   args:
     warn: no
   register: go_url
+
+- debug:
+    var: go_url
+    verbosity: 2
+    
   # set_fact:
   #   go_u={{ go_url.stdout }}
 

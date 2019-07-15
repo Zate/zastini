@@ -21,12 +21,20 @@
 - name: Determine latest version of go
   shell: "{{ go_url.stdout }} | grep -oP 'go[0-9\\.]+' | grep -oP '[0-9\\.]+' | head -c -2"
   register: go_latest
+
+- name:
+  debug:
+    msg: "{{ go_latest.stdout }}"
   # set_fact:
   #   go_latest_version={{ go_latest.stdout }}
 
 - name: Determine current version of go
   shell: go version | cut -d" " -f3 | sed -e's/go//g'
   register: go_version
+
+- name:
+  debug:
+    msg: "{{ go_version.stdout }}"
   # set_fact:
   #   go_ver={{ go_version.stdout }}
 
@@ -42,6 +50,10 @@
     state: absent
     path: /usr/local/go
   register: no_go
+
+- name:
+  debug:
+    msg: "{{ no_go }}"
 
 # - name: Install new version if no current version or if newer version
 

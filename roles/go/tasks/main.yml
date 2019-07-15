@@ -49,7 +49,11 @@
     url: "{{ go_url.stdout }}"
     dest: /tmp/
     checksum: "sha256:{{ go_256.stdout }}"
+  register: go_download
   when: go_version is failed or go_version.stdout != go_latest.stdout
+
+- debug:
+    var: go_download
 
 - name: Remove old version if needed
   file: 

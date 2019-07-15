@@ -4,9 +4,9 @@
   roles:
       - default
       - role: docker
-        when: docker is defined
+        when: docker is defined or all is defined
       - role: go
-        when: go is defined
+        when: go is defined or all is defined
       - role: vscode
-        when: vscode is defined
+        when: vscode is defined or all is defined
 

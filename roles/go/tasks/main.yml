@@ -4,6 +4,7 @@
 - name: Get the url for the latest golang version
   shell: wget -qO- https://golang.org/dl/ | grep -oP 'https:\/\/dl\.google\.com\/go\/go([0-9\.]+)\.linux-amd64\.tar\.gz' | head -n 1 
   register: go_url
+  warn: no
   # set_fact:
   #   go_u={{ go_url.stdout }}
 

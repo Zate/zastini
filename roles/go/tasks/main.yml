@@ -67,7 +67,7 @@
 
 - name: Install new version if no current version or if newer version
   unarchive:
-    src: {{ go_download.dest }}
+    src: "{{ go_download.dest }}"
     dest: /usr/local/go
     remote_src: yes
   register: go_deploy

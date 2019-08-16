@@ -81,4 +81,5 @@ lxc exec --env TIP=$TIP --env PUSER=$1 --env PBURL=$PBURL --env PBBRANCH=$PBBRAN
 lxc stop udev
 sleep 5
 lxc start udev
+lxc snapshot udev init
                           

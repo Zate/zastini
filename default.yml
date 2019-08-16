@@ -3,6 +3,8 @@
   
   roles:
       - default
+      - role: crosvm
+        when: crosvm is defined or all is defined
       - role: docker
         when: docker is defined or all is defined
       - role: go

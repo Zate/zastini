@@ -49,7 +49,7 @@ lxc launch ubuntu:18.04 udev
 sleep 5
 
 lxc exec udev -- sh -c 'apt-get update && apt-get -y upgrade && apt install -y software-properties-common && apt-add-repository --yes --update ppa:ansible/ansible && apt-get install -y ansible'
-lxc exec --env TIP=$TIP --env PUSER=$1 --env PBURL=$PBURL --env PBBRANCH=$PBBRANCH --env PB=$PB udev -- sh -c 'ansible-pull -C $PBBRANCH -U $PBURL $PB'
+lxc exec --env TIP=$TIP --env PUSER=$1 --env PBURL=$PBURL --env PBBRANCH=$PBBRANCH --env PB=$PB udev -- sh -c 'ansible-pull -C $PBBRANCH -U $PBURL $PB -e crosvm=true'
 
 # lxc exec penguin -- sh -c 'apt-get update && apt-get -y upgrade'
 # lxc exec penguin -- sh -c 'echo "deb https://storage.googleapis.com/cros-packages buster main" > /etc/apt/sources.list.d/cros.list'

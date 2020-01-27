@@ -5,7 +5,7 @@
 # /mnt/stateful/lxd_config should be our $pwd
 # 
 
-if [[ `lxc info penguin | awk '/^Status: / {print $2}'` != "Running"]]
+if [[ `lxc info penguin | awk '/^Status: / {print $2}'` != "Running" ]]
   then
     echo "Penguin default container needs to be running"
     exit 1

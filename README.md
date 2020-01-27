@@ -15,7 +15,7 @@ Update, upgrade and install latest ansible
 sudo apt-get update && sudo apt-get -y upgrade && \
 sudo apt install -y software-properties-common && \
 sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93C4A3FD7BB9C367 && \
-sudo apt-add-repository --yes --update 'deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main' && \
+sudo apt-add-repository --yes --update 'deb http://ppa.launchpad.net/ansible/ansible/ubuntu bionic main' && \
 sudo apt -y install ansible
 ```
 #### Run Playbook via ansible-pull

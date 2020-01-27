@@ -11,7 +11,7 @@
 
 - name: add deb for crostini packages for correct cros version
   apt_repository:
-    repo: deb https://storage.googleapis.com/cros-packages/76 buster main
+    repo: deb https://storage.googleapis.com/cros-packages/"{{ ansible.env.CROS_VER }}" buster main
     state: present
     filename: cros
     update_cache: yes

@@ -5,14 +5,24 @@
 # /mnt/stateful/lxd_config should be our $pwd
 # 
 
+if [[ `lxc info penguin | awk '/^Status: / {print $2}'` != "Running"]]
+  then
+    echo "Penguin default container needs to be running"
+    exit 1
+fi
+
 unset PBURL
 unset USER
 unset CROS
+unset CROS_VER
 unset TIP
+unset PUSER
 
 USER=`whoami`
 CROS=`cat /etc/lsb-release | grep CHROMEOS_RELEASE_NAME | cut -d "=" -f2`
+CROS_VER=`cat /etc/lsb-release | grep CHROMEOS_RELEASE_CHROME_MILESTONE | cut -d "=" -f2`
 TIP=`ip -br -h -4 -o address show dev eth0 | sed 's/  */ /g' | cut -d" " -f3 | cut -d"/" -f1`
+PUSER=`lxc exec penguin -- getent passwd $(awk '/^UID_MIN/ {print $2}' /etc/login.defs) | cut -d: -f1`
 
 # edit these 3 below to use a diff repo / branch / file
 PBURL="https://github.com/Zate/zastini/"
@@ -23,6 +33,7 @@ echo $CROS
 echo $PWD
 echo $USER
 echo $TIP
+echo $PUSER
 
 if [[ "$PWD" != "/mnt/stateful/lxd_conf" ]] || [[ "$USER" != "chronos" ]] || [[ "$CROS" != "Chromium OS" ]]
   then
@@ -30,11 +41,11 @@ if [[ "$PWD" != "/mnt/stateful/lxd_conf" ]] || [[ "$USER" != "chronos" ]] || [[ 
     exit 1
 fi
 
-if [[ -z "$1" ]]
-  then
-    echo "You need to supply a username. ./bootstrap.sh <username>"
-    exit 1
-fi
+# if [[ -z "$1" ]]
+#   then
+#     echo "You need to supply a username. ./bootstrap.sh <username>"
+#     exit 1
+# fi
 
 # Let add the right things to allow lxc control from inside the container.
 
@@ -49,7 +60,7 @@ lxc launch ubuntu:18.04 udev
 sleep 5
 
 lxc exec udev -- sh -c 'apt-get update && apt-get -y upgrade && apt install -y software-properties-common && apt-add-repository --yes --update ppa:ansible/ansible && apt-get install -y ansible'
-lxc exec --env TIP=$TIP --env PUSER=$1 --env PBURL=$PBURL --env PBBRANCH=$PBBRANCH --env PB=$PB udev -- sh -c 'ansible-pull -C $PBBRANCH -U $PBURL $PB -e crosvm=true'
+lxc exec --env CROS_VER=$CROS_VER --env TIP=$TIP --env PUSER=$PUSER --env PBURL=$PBURL --env PBBRANCH=$PBBRANCH --env PB=$PB udev -- sh -c 'ansible-pull -C $PBBRANCH -U $PBURL $PB -e crosvm=true'
 
 # lxc exec penguin -- sh -c 'apt-get update && apt-get -y upgrade'
 # lxc exec penguin -- sh -c 'echo "deb https://storage.googleapis.com/cros-packages buster main" > /etc/apt/sources.list.d/cros.list'

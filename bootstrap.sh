@@ -32,6 +32,7 @@ PB="default.yml"
 echo $CROS
 echo $PWD
 echo $USER
+echo $CROS_VER
 echo $TIP
 echo $PUSER
 

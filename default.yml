@@ -1,5 +1,8 @@
+---
 - hosts: localhost
-  become: true
+  connection: local
+  become: yes
+  remote_user: {{ ansible_facts['user_id'] }}
   
   roles:
       - default

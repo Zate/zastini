@@ -2,7 +2,7 @@
 - hosts: localhost
   connection: local
   become: yes
-  remote_user: "{{ ansible_facts['user_id'] }}"
+  #remote_user: "{{ ansible_facts['user_id'] }}"
   
   roles:
       - default
